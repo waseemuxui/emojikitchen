@@ -530,3 +530,116 @@ button {
   .skin-tone-5 { background-color: #916544 }
   .skin-tone-6 { background-color: #61493F }
 }
+
+.kitchen {
+  &.kitchen-checkbox {
+    margin-top: 5px;
+
+    .box {
+      cursor: pointer;
+      border: 1px solid var(--em-color-border);
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      padding: 0.2rem 0.4rem;
+    }
+
+    .switch {
+      --switch-size: 14px;
+
+      position: relative;
+      display: inline-flex;
+      height: calc(var(--switch-size) + 4px);
+      width: calc(var(--switch-size) * 2 + 4px);
+      flex-shrink: 0;
+      border-radius: 9999px;
+      border: 2px transparent solid;
+      transition: background-color 0.1s ease-in-out;
+
+      .switch-handle {
+        display: inline-block;
+        height: var(--switch-size);
+        width: var(--switch-size);
+        border-radius: 9999px;
+        background-color: white;
+        transition: transform 0.1s ease-in-out;
+      }
+
+      &[aria-checked="true"] {
+        background-color: rgb(var(--em-rgb-accent));
+
+        .switch-handle {
+          transform: translateX(0);
+        }
+      }
+
+      &[aria-checked="false"] {
+        background-color: var(--color-b);
+
+        .switch-handle {
+          transform: translateX(var(--switch-size));
+        }
+      }
+    }
+
+    #switch-label {
+      cursor: pointer;
+      font-size: 0.8rem;
+      margin-left: 0.25rem;
+    }
+  }
+
+  &.kitchen-preview {
+    margin: -8px 4px;
+
+    button:disabled {
+      cursor: auto;
+    }
+
+    .slots {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .slot {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--em-color-border);
+      border-radius: 10px;
+      height: 40px;
+      width: 40px;
+    }
+
+    .slot-current {
+      outline: 2px solid rgb(var(--em-rgb-accent));
+    }
+
+    .cooked-emoji {
+      height: 32px;
+      width: 32px;
+    }
+
+    .clear-slot-button {
+      display: flex;
+      height: 25px;
+      width: 25px;
+      font-size: 15px;
+      align-items: center;
+      border-radius: 9999px;
+      justify-content: center;
+      background-color: var(--em-color-border);
+    }
+
+    .recipe {
+      width: 100%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: 0.8rem;
+      color: var(--color-b);
+      margin-top: 0.5rem;
+    }
+  }
+}

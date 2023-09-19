@@ -9,6 +9,14 @@ import Icons from '../../icons'
 import { Emoji } from '../Emoji'
 import { Navigation } from '../Navigation'
 import { PureInlineComponent } from '../HOCs'
+import {
+  initKitchen,
+  modifySearchResultToShowKitchenPallet,
+  getInitialKitchenState,
+  handleRecipeClick,
+  renderKitchenCheckbox,
+  renderKitchenPreview,
+} from './Kitchen'
 
 const Performance = {
   rowsPerRender: 10,
@@ -24,8 +32,10 @@ export default class Picker extends Component {
       pos: [-1, -1],
       perLine: this.initDynamicPerLine(props),
       visibleRows: { 0: true },
+      kitchen: getInitialKitchenState(this.handleSearchInput.bind(this)),
       ...this.getInitialState(props),
     }
+    this.setState = this.setState.bind(this)
   }
 
   getInitialState(props = this.props) {
@@ -59,6 +69,8 @@ export default class Picker extends Component {
 
       this.props.searchPosition = 'static'
     }
+
+    initKitchen()
   }
 
   componentDidMount() {
@@ -372,7 +384,16 @@ export default class Picker extends Component {
     if (!input) return
 
     const { value } = input
-    const searchResults = await SearchIndex.search(value)
+    let searchResults = await SearchIndex.search(value)
+
+    if (this.state.kitchen.enabled) {
+      searchResults = modifySearchResultToShowKitchenPallet(
+        this.state.kitchen,
+        searchResults,
+      )
+      console.log(searchResults)
+    }
+
     const afterRender = () => {
       if (!this.refs.scroll.current) return
       this.refs.scroll.current.scrollTop = 0
@@ -619,7 +640,15 @@ export default class Picker extends Component {
       emoji = this.getEmojiByPos(pos)
     }
 
-    if (emoji) {
+    if (this.state.kitchen.enabled) {
+      handleRecipeClick({
+        e,
+        emoji,
+        state: this.state.kitchen,
+        setState: this.setState,
+        onEmojiSelect: this.props.onEmojiSelect,
+      })
+    } else {
       const emojiData = getEmojiData(emoji, { skinIndex: this.state.skin - 1 })
 
       if (this.props.maxFrequentRows) {
@@ -689,13 +718,29 @@ export default class Picker extends Component {
     const noSearchResults =
       this.state.searchResults && !this.state.searchResults.length
 
-    return (
+    const render = (children) => (
       <div
         id="preview"
-        class="flex flex-middle"
         dir={this.dir}
         data-position={this.props.previewPosition}
       >
+        {children}
+      </div>
+    )
+
+    if (this.state.kitchen.enabled) {
+      return render(
+        renderKitchenPreview(
+          this.props,
+          this.state.kitchen,
+          this.setState,
+          emoji,
+        ),
+      )
+    }
+
+    return render(
+      <div class="flex flex-middle">
         <div class="flex flex-middle flex-grow">
           <div
             class="flex flex-auto flex-middle flex-center"
@@ -741,13 +786,15 @@ export default class Picker extends Component {
         {!emoji &&
           this.props.skinTonePosition == 'preview' &&
           this.renderSkinToneButton()}
-      </div>
+      </div>,
     )
   }
 
   renderEmojiButton(emoji, { pos, posinset, grid }) {
     const size = this.props.emojiButtonSize
-    const skin = this.state.tempSkin || this.state.skin
+    const skin = this.state.kitchen.enabled
+      ? 1
+      : this.state.tempSkin || this.state.skin
     const emojiSkin = emoji.skins[skin - 1] || emoji.skins[0]
     const native = emojiSkin.native
     const selected = deepEqual(this.state.pos, pos)
@@ -847,7 +894,9 @@ export default class Picker extends Component {
     return (
       <div class="category" ref={this.refs.search}>
         <div class={`sticky padding-small align-${this.dir[0]}`}>
-          {I18n.categories.search}
+          {this.state.kitchen.enabled
+            ? "Let's cooking!"
+            : I18n.categories.search}
         </div>
         <div>
           {!searchResults.length ? (
@@ -1108,6 +1157,7 @@ export default class Picker extends Component {
         {this.props.searchPosition == 'sticky' && (
           <div class="padding-lr">{this.renderSearch()}</div>
         )}
+        {renderKitchenCheckbox(this.state.kitchen, this.setState)}
 
         <div ref={this.refs.scroll} class="scroll flex-grow padding-lr">
           <div
@@ -1123,7 +1173,10 @@ export default class Picker extends Component {
         </div>
 
         {this.props.navPosition == 'bottom' && this.renderNav()}
-        {this.props.previewPosition == 'bottom' && this.renderPreview()}
+        {(this.props.previewPosition == 'bottom' ||
+          (this.props.previewPosition === 'none' &&
+            this.state.kitchen.enabled)) &&
+          this.renderPreview()}
         {this.state.showSkins && this.renderSkins()}
         {this.renderLiveRegion()}
       </section>
