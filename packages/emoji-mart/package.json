@@ -6,7 +6,7 @@
   "homepage": "https://penpenpng.github.io/emoji-kitchen-mart/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/missive/emoji-mart",
+    "url": "https://penpenpng.github.io/emoji-kitchen-mart",
     "directory": "packages/emoji-mart"
   },
   "source": "src/index.ts",
@@ -32,7 +32,8 @@
     "emoticons",
     "emoji-picker",
     "web-component",
-    "twemoji"
+    "twemoji",
+    "emoji-kitchen"
   ],
   "scripts": {
     "build": "parcel build --no-autoinstall",
