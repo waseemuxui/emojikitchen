@@ -391,7 +391,6 @@ export default class Picker extends Component {
         this.state.kitchen,
         searchResults,
       )
-      console.log(searchResults)
     }
 
     const afterRender = () => {
