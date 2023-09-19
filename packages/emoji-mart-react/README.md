@@ -1,6 +1,6 @@
 # `@emoji-mart/react`
 
-A React wrapper for [EmojiMart](https://missiveapp.com/open/emoji-mart).
+A React wrapper for [EmojiMart](https://penpenpng.github.io/emoji-kitchen-mart/).
 
 ## 🧑‍💻 Usage
 ```sh

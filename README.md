@@ -1,7 +1,7 @@
 <div align="center">
   <br><b>Emoji Mart</b> is a customizable<br>emoji picker HTML component for the web
-  <br><a href="https://missiveapp.com/open/emoji-mart">Demo</a>
-  <br><br><a href="https://missiveapp.com/open/emoji-mart"><img width="639" alt="EmojiMart" src="https://user-images.githubusercontent.com/436043/163686169-766ef715-89b5-4ada-88d7-672623713bc0.png"></a>
+  <br><a href="https://penpenpng.github.io/emoji-kitchen-mart/">Demo</a>
+  <br><br><a href="https://penpenpng.github.io/emoji-kitchen-mart/"><img width="639" alt="EmojiMart" src="https://user-images.githubusercontent.com/436043/163686169-766ef715-89b5-4ada-88d7-672623713bc0.png"></a>
   <br><br><a title="Team email, team chat, team tasks, one app" href="https://missiveapp.com"><img width="34" alt="Missive | Team email, team chat, team tasks, one app" src="https://user-images.githubusercontent.com/436043/163655413-df22f8cc-99a7-4d8d-a5c1-105c435910d7.png"></a>
   <br>Brought to you by the <a title="Team email, team chat, team tasks, one app" href="https://missiveapp.com">Missive</a> team
 </div>
@@ -169,7 +169,7 @@ function App() {
 ```
 
 ### Custom category icons
-You can use custom category icons by providing an object with the category name as key and the icon as value. Currently supported formats are `svg` string and `src`. See [example](https://missiveapp.com/open/emoji-mart/example-categories.html).
+You can use custom category icons by providing an object with the category name as key and the icon as value. Currently supported formats are `svg` string and `src`. See [example](https://penpenpng.github.io/emoji-kitchen-mart//example-categories.html).
 
 ```js
 const customCategoryIcons = {
@@ -273,12 +273,12 @@ Given the small file size, English is built-in and doesn’t need to be provided
 
 ## 📚 Examples
 
-- [Categories](https://missiveapp.com/open/emoji-mart/example-categories.html)
-- [Custom emoji font](https://missiveapp.com/open/emoji-mart/example-custom-font.html)
-- [Custom styles](https://missiveapp.com/open/emoji-mart/example-custom-styles.html)
-- [Emoji component](https://missiveapp.com/open/emoji-mart/example-emoji-component.html)
-- [Headless search](https://missiveapp.com/open/emoji-mart/example-headless-search.html)
-- [Slack colors](https://missiveapp.com/open/emoji-mart/example-slack-colors.html)
+- [Categories](https://penpenpng.github.io/emoji-kitchen-mart//example-categories.html)
+- [Custom emoji font](https://penpenpng.github.io/emoji-kitchen-mart//example-custom-font.html)
+- [Custom styles](https://penpenpng.github.io/emoji-kitchen-mart//example-custom-styles.html)
+- [Emoji component](https://penpenpng.github.io/emoji-kitchen-mart//example-emoji-component.html)
+- [Headless search](https://penpenpng.github.io/emoji-kitchen-mart//example-headless-search.html)
+- [Slack colors](https://penpenpng.github.io/emoji-kitchen-mart//example-slack-colors.html)
 
 ## 🤓 Built for modern browsers
 EmojiMart relies on these APIs, you may need to include polyfills if you need to support older browsers:
