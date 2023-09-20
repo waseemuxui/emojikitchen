@@ -198,7 +198,7 @@ function cook(x: Emoji, y: Emoji): EmojiData | undefined {
   return {
     id: `${recipe.left.id}+${recipe.right.id}`,
     name: `${recipe.left.name} & ${recipe.right.name}`,
-    shortcodes: '',
+    shortcodes: undefined,
     src,
     keywords: [],
   }
@@ -257,10 +257,18 @@ interface Emoji {
   id: string
   name: string
   keywords: string[]
+  search?: string
   shortcodes: string
   aliases?: string[]
   emoticons?: string[]
-  skins: any[]
+  skins: Skin[]
+  version: number
+}
+
+interface Skin {
+  native: string
+  shortcodes: string
+  unified: string
 }
 
 interface EmojiData {
@@ -269,7 +277,7 @@ interface EmojiData {
   native?: string
   unified?: string
   keywords: string[]
-  shortcodes: string
+  shortcodes?: string
   skin?: number
   src?: string
   aliases?: string[]
