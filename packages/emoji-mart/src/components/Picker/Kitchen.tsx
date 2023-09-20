@@ -201,6 +201,7 @@ function cook(x: Emoji, y: Emoji): EmojiData | undefined {
     shortcodes: undefined,
     src,
     keywords: [],
+    recipe: [recipe.left, recipe.right],
   }
 }
 
@@ -282,6 +283,7 @@ interface EmojiData {
   src?: string
   aliases?: string[]
   emoticons?: string[]
+  recipe?: [EmojiData, EmojiData]
 }
 
 export interface KitchenState {
