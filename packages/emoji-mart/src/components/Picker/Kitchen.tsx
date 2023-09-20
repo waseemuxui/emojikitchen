@@ -93,6 +93,8 @@ export function renderKitchenCheckbox(
       {
         kitchen: {
           ...state,
+          pinned: null,
+          focus: 'left',
           enabled,
         },
       },
