@@ -26,7 +26,7 @@ export function modifySearchResultToShowKitchenPallet(
   } else {
     const pinnedCode = state.pinned.skins[0].unified
     const selectableCodes = new Set(
-      kitchenData[pinnedCode].map(({ leftEmoji, rightEmoji }) =>
+      kitchenData[pinnedCode].map(([leftEmoji, rightEmoji]) =>
         leftEmoji === pinnedCode ? rightEmoji : leftEmoji,
       ),
     )
@@ -229,9 +229,9 @@ function findRecipe(x: EmojiData, y: EmojiData): KitchenRecipe | undefined {
 
   const recipe = row
     .filter(
-      (r) =>
-        (r.leftEmoji === x.unified && r.rightEmoji === y.unified) ||
-        (r.leftEmoji === y.unified && r.rightEmoji === x.unified),
+      ([leftEmoji, rightEmoji]) =>
+        (leftEmoji === x.unified && rightEmoji === y.unified) ||
+        (leftEmoji === y.unified && rightEmoji === x.unified),
     )
     .sort((a, b) => (a.date > b.date ? 1 : -1))
     .pop()
@@ -239,7 +239,7 @@ function findRecipe(x: EmojiData, y: EmojiData): KitchenRecipe | undefined {
     return undefined
   }
 
-  const { leftEmoji, rightEmoji, date } = recipe
+  const [leftEmoji, rightEmoji, date] = recipe
 
   return {
     left: leftEmoji === x.unified ? x : y,
