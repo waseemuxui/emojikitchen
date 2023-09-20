@@ -1,10 +1,17 @@
-import { getEmojiData } from '../../utils'
 import { Emoji } from '../Emoji'
 import kitchenData from './kitchenData.json'
 import { Data } from '../../config'
 import { SearchIndex } from '../../helpers'
+import {
+  cook,
+  EmojiItem,
+  KitchenState,
+  SetKitchenState,
+  HandleSearchInput,
+  OnEmojiSelect,
+} from './kitchen-tools'
 
-let availableEmojis: Emoji[] = []
+let availableEmojis: EmojiItem[] = []
 
 export function initKitchen() {
   const availables = new Set(Object.keys(kitchenData))
@@ -12,14 +19,14 @@ export function initKitchen() {
   availableEmojis = Data.categories.flatMap((cat) =>
     cat.emojis
       .map(SearchIndex.get)
-      .filter((emoji) => availables.has(emoji.skins[0].unified)),
+      .filter((emoji) => emoji && availables.has(emoji.skins[0].unified)),
   )
 }
 
 export function modifySearchResultToShowKitchenPallet(
   state: KitchenState,
-  emojis: Emoji[],
-): Emoji[] {
+  emojis: EmojiItem[],
+): EmojiItem[] {
   let selectables = []
   if (state.focus === 'left') {
     selectables = availableEmojis
@@ -63,7 +70,7 @@ export function handleRecipeClick({
   onEmojiSelect,
 }: {
   e: Event
-  emoji: Emoji
+  emoji: EmojiItem
   state: KitchenState
   setState: SetKitchenState
   onEmojiSelect?: OnEmojiSelect
@@ -125,7 +132,7 @@ export function renderKitchenPreview(
   props: any,
   state: KitchenState,
   setState: SetKitchenState,
-  emoji: Emoji,
+  emoji: EmojiItem,
 ) {
   const leftEmoji = (state.focus === 'left' && emoji) || state.pinned || null
   const rightEmoji = (state.focus === 'right' && emoji) || null
@@ -184,128 +191,4 @@ export function renderKitchenPreview(
       <div class="recipe">{recipe}</div>
     </div>
   )
-}
-
-function cook(x: Emoji, y: Emoji): EmojiData | undefined {
-  const recipe = findRecipe(
-    getEmojiData(x, { skinIndex: 0 }),
-    getEmojiData(y, { skinIndex: 0 }),
-  )
-  if (!recipe) {
-    return undefined
-  }
-
-  const src = getCookedEmojiSrc(recipe)
-
-  return {
-    id: `${recipe.left.id}+${recipe.right.id}`,
-    name: `${recipe.left.name} & ${recipe.right.name}`,
-    shortcodes: undefined,
-    src,
-    keywords: [],
-    recipe: [recipe.left, recipe.right],
-  }
-}
-
-function getCookedEmojiSrc(recipe: KitchenRecipe): string {
-  const rootUrl = 'https://www.gstatic.com/android/keyboard/emojikitchen'
-
-  const toCode = (unifiedCode: string) =>
-    unifiedCode
-      .split('-')
-      .map((part: string) => `u${part.toLowerCase()}`)
-      .join('-')
-  const toFileName = (recipe: KitchenRecipe) =>
-    `${toCode(recipe.left.unified)}_${toCode(recipe.right.unified)}.png`
-
-  return `${rootUrl}/${recipe.date}/${toCode(recipe.left.unified)}/${toFileName(
-    recipe,
-  )}`
-}
-
-function findRecipe(x: EmojiData, y: EmojiData): KitchenRecipe | undefined {
-  const row = kitchenData[x.unified]
-  if (!row) {
-    return undefined
-  }
-
-  const recipe = row
-    .filter(
-      ([leftEmoji, rightEmoji]) =>
-        (leftEmoji === x.unified && rightEmoji === y.unified) ||
-        (leftEmoji === y.unified && rightEmoji === x.unified),
-    )
-    .sort((a, b) => (a.date > b.date ? 1 : -1))
-    .pop()
-  if (!recipe) {
-    return undefined
-  }
-
-  const [leftEmoji, rightEmoji, date] = recipe
-
-  return {
-    left: leftEmoji === x.unified ? x : y,
-    right: rightEmoji === x.unified ? x : y,
-    date,
-  }
-}
-
-interface KitchenRecipe {
-  left: EmojiData
-  right: EmojiData
-  date: string
-}
-
-interface Emoji {
-  id: string
-  name: string
-  keywords: string[]
-  search?: string
-  shortcodes: string
-  aliases?: string[]
-  emoticons?: string[]
-  skins: Skin[]
-  version: number
-}
-
-interface Skin {
-  native: string
-  shortcodes: string
-  unified: string
-}
-
-interface EmojiData {
-  id: string
-  name: string
-  native?: string
-  unified?: string
-  keywords: string[]
-  shortcodes?: string
-  skin?: number
-  src?: string
-  aliases?: string[]
-  emoticons?: string[]
-  recipe?: [EmojiData, EmojiData]
-}
-
-export interface KitchenState {
-  enabled: boolean
-  pinned: Emoji | null
-  focus: 'left' | 'right'
-  handleSearchInput: () => void
-}
-
-interface SetKitchenState {
-  (
-    state: { kitchen: KitchenState; [key: string]: any },
-    afterRender?: () => void,
-  ): void
-}
-
-interface HandleSearchInput {
-  (): void
-}
-
-interface OnEmojiSelect {
-  (emojiData: EmojiData, e: Event): void
 }

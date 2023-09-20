@@ -48,6 +48,10 @@ export function getEmojiData(emoji, { skinIndex = 0 } = {}) {
     emojiData.emoticons = emoji.emoticons
   }
 
+  if (emoji.recipe) {
+    emojiData.recipe = emoji.recipe
+  }
+
   return emojiData
 }
 

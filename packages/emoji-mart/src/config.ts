@@ -7,6 +7,7 @@ import {
   SafeFlags,
   SearchIndex,
 } from './helpers'
+import { findCookedEmoji } from './components/Picker/kitchen-tools'
 
 export let I18n = null
 export let Data = null
@@ -172,7 +173,9 @@ async function _init(props) {
     let emojiIndex = category.emojis.length
     while (emojiIndex--) {
       const emojiId = category.emojis[emojiIndex]
-      const emoji = emojiId.id ? emojiId : Data.emojis[emojiId]
+      const emoji = emojiId.id
+        ? emojiId
+        : Data.emojis[emojiId] || findCookedEmoji(emojiId)
 
       const ignore = () => {
         category.emojis.splice(emojiIndex, 1)

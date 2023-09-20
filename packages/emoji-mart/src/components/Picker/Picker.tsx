@@ -17,6 +17,7 @@ import {
   renderKitchenCheckbox,
   renderKitchenPreview,
 } from './Kitchen'
+import { findCookedEmoji } from './kitchen-tools'
 
 const Performance = {
   rowsPerRender: 10,
@@ -643,7 +644,13 @@ export default class Picker extends Component {
         emoji,
         state: this.state.kitchen,
         setState: this.setState,
-        onEmojiSelect: this.props.onEmojiSelect ?? (() => {}),
+        onEmojiSelect: (emojiData, e) => {
+          if (this.props.maxFrequentRows) {
+            FrequentlyUsed.add(emojiData, this.props)
+          }
+
+          this.props.onEmojiSelect?.(emojiData, e)
+        },
       })
     } else {
       if (!this.props.onEmojiSelect) return
@@ -994,7 +1001,12 @@ export default class Picker extends Component {
                             )
                           }
 
-                          const emoji = SearchIndex.get(emojiId)
+                          let emoji = SearchIndex.get(emojiId)
+
+                          // It may be a cooked emoji...
+                          if (!emoji) {
+                            emoji = findCookedEmoji(emojiId)
+                          }
 
                           return this.renderEmojiButton(emoji, {
                             pos: [row.index, ii],
