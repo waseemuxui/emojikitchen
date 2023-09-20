@@ -533,7 +533,7 @@ button {
 
 .kitchen {
   &.kitchen-checkbox {
-    margin-top: 5px;
+    padding-top: 5px;
 
     .box {
       cursor: pointer;
@@ -610,10 +610,11 @@ button {
       border-radius: 10px;
       height: 40px;
       width: 40px;
+      border: 2px solid transparent;
     }
 
-    .slot-current {
-      outline: 2px solid rgb(var(--em-rgb-accent));
+    .slot.slot-current {
+      border: 2px solid rgb(var(--em-rgb-accent));
     }
 
     .cooked-emoji {
