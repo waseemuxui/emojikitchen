@@ -1,6 +1,6 @@
 # Emoji Kitchen Mart
 
-**Emoji Kitchen Mart** is a fork project of [Emoji Mart](https://github.com/missive/emoji-mar). In addition to Emoji Mart's features, it can output the *cooked* emoji by Emoji Kitchen as a custom emoji. ([Demo](https://penpenpng.github.io/emoji-kitchen-mart/))
+**Emoji Kitchen Mart** is a fork project of [Emoji Mart](https://github.com/missive/emoji-mart). In addition to Emoji Mart's features, it can output the *cooked* emoji by Emoji Kitchen as a custom emoji. ([Demo](https://penpenpng.github.io/emoji-kitchen-mart/))
 
 ---
 
