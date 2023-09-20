@@ -633,8 +633,6 @@ export default class Picker extends Component {
   }
 
   handleEmojiClick({ e, emoji, pos }) {
-    if (!this.props.onEmojiSelect) return
-
     if (!emoji && pos) {
       emoji = this.getEmojiByPos(pos)
     }
@@ -645,9 +643,11 @@ export default class Picker extends Component {
         emoji,
         state: this.state.kitchen,
         setState: this.setState,
-        onEmojiSelect: this.props.onEmojiSelect,
+        onEmojiSelect: this.props.onEmojiSelect ?? (() => {}),
       })
     } else {
+      if (!this.props.onEmojiSelect) return
+
       const emojiData = getEmojiData(emoji, { skinIndex: this.state.skin - 1 })
 
       if (this.props.maxFrequentRows) {
