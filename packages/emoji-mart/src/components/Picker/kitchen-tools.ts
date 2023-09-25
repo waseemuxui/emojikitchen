@@ -54,6 +54,10 @@ export function cook(x: EmojiItem, y: EmojiItem): EmojiData | undefined {
   }
 }
 
+export function getUnified(emoji: EmojiItem): string {
+  return emoji?.skins[0]?.unified
+}
+
 function getCookedEmojiSrc(recipe: KitchenRecipe): string {
   const rootUrl = 'https://www.gstatic.com/android/keyboard/emojikitchen'
 
@@ -139,8 +143,10 @@ interface EmojiData {
 
 export interface KitchenState {
   enabled: boolean
-  pinned: EmojiItem | null
-  focus: 'left' | 'right'
+  left: EmojiItem | null
+  right: EmojiItem | null
+  cooked: EmojiData | null
+  focus: 'left' | 'right' | 'cooked'
   handleSearchInput: () => void
 }
 

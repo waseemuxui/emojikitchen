@@ -640,17 +640,9 @@ export default class Picker extends Component {
 
     if (this.state.kitchen.enabled) {
       handleRecipeClick({
-        e,
         emoji,
         state: this.state.kitchen,
         setState: this.setState,
-        onEmojiSelect: (emojiData, e) => {
-          if (this.props.maxFrequentRows) {
-            FrequentlyUsed.add(emojiData, this.props)
-          }
-
-          this.props.onEmojiSelect?.(emojiData, e)
-        },
       })
     } else {
       if (!this.props.onEmojiSelect) return
@@ -741,6 +733,13 @@ export default class Picker extends Component {
           this.state.kitchen,
           this.setState,
           emoji,
+          (emojiData, e) => {
+            if (this.props.maxFrequentRows) {
+              FrequentlyUsed.add(emojiData, this.props)
+            }
+
+            this.props.onEmojiSelect?.(emojiData, e)
+          },
         ),
       )
     }

@@ -634,10 +634,13 @@ button {
         padding-left: 16px;
 
         button {
+          display: block;
+          height: 38px;
           border-radius: 5px;
-          padding: 4px 8px;
+          padding: 0 12px;
           background-color: var(--em-button-background);
           color: var(--em-button-color);
+          font-size: 0.82rem;
 
           &:disabled {
             background-color: var(--em-button-background-disabled);

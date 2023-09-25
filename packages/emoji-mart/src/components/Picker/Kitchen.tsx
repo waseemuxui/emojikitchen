@@ -8,6 +8,7 @@ import {
   KitchenState,
   SetKitchenState,
   HandleSearchInput,
+  getUnified,
   OnEmojiSelect,
 } from './kitchen-tools'
 
@@ -27,11 +28,15 @@ export function modifySearchResultToShowKitchenPallet(
   state: KitchenState,
   emojis: EmojiItem[],
 ): EmojiItem[] {
+  if (state.focus === 'cooked') {
+    return []
+  }
+
   let selectables = []
   if (state.focus === 'left') {
     selectables = availableEmojis
   } else {
-    const pinnedCode = state.pinned.skins[0].unified
+    const pinnedCode = getUnified(state.left)
     const selectableCodes = new Set(
       kitchenData[pinnedCode].map(([leftEmoji, rightEmoji]) =>
         leftEmoji === pinnedCode ? rightEmoji : leftEmoji,
@@ -56,36 +61,57 @@ export function getInitialKitchenState(
 ): KitchenState {
   return {
     enabled: false,
-    pinned: null,
+    left: null,
+    right: null,
+    cooked: null,
     focus: 'left',
     handleSearchInput,
   }
 }
 
 export function handleRecipeClick({
-  e,
   emoji,
   state,
   setState,
-  onEmojiSelect,
 }: {
-  e: Event
   emoji: EmojiItem
   state: KitchenState
   setState: SetKitchenState
-  onEmojiSelect?: OnEmojiSelect
 }) {
   if (state.focus === 'left') {
-    setState({ kitchen: { ...state, pinned: emoji, focus: 'right' } }, () => {
-      state.handleSearchInput()
-    })
-  } else {
-    const cookedEmojiData = cook(state.pinned, emoji)
+    setState(
+      {
+        kitchen: {
+          ...state,
+          left: emoji,
+          right: null,
+          cooked: null,
+          focus: 'right',
+        },
+      },
+      () => {
+        state.handleSearchInput()
+      },
+    )
+  } else if (state.focus === 'right') {
+    const cookedEmojiData = cook(state.left, emoji)
     if (!cookedEmojiData) {
       return
     }
 
-    onEmojiSelect(cookedEmojiData, e)
+    setState(
+      {
+        kitchen: {
+          ...state,
+          right: emoji,
+          cooked: cookedEmojiData,
+          focus: 'cooked',
+        },
+      },
+      () => {
+        state.handleSearchInput()
+      },
+    )
   }
 }
 
@@ -100,7 +126,9 @@ export function renderKitchenCheckbox(
       {
         kitchen: {
           ...state,
-          pinned: null,
+          left: null,
+          right: null,
+          cooked: null,
           focus: 'left',
           enabled,
         },
@@ -133,21 +161,25 @@ export function renderKitchenPreview(
   state: KitchenState,
   setState: SetKitchenState,
   emoji: EmojiItem,
+  onEmojiSelect?: OnEmojiSelect,
 ) {
-  const leftEmoji = (state.focus === 'left' && emoji) || state.pinned || null
-  const rightEmoji = (state.focus === 'right' && emoji) || null
+  const leftEmoji = (state.focus === 'left' && emoji) || state.left || null
+  const rightEmoji = (state.focus === 'right' && emoji) || state.right || null
   const cookedEmojiData =
-    leftEmoji && rightEmoji ? cook(leftEmoji, rightEmoji) : null
+    leftEmoji && rightEmoji
+      ? cook(leftEmoji, rightEmoji)
+      : state.cooked
+      ? state.cooked
+      : null
 
-  let recipe = ''
-  if (leftEmoji) {
-    recipe += leftEmoji?.skins[0].shortcodes
-  }
-  if (rightEmoji) {
-    recipe += ' x '
-    recipe += rightEmoji?.skins[0].shortcodes
-  }
-  recipe ||= 'Pick an emoji…'
+  const recipe =
+    state.focus === 'left' && leftEmoji
+      ? leftEmoji.skins[0]?.shortcodes
+      : state.focus === 'right' && rightEmoji
+      ? rightEmoji.skins[0]?.shortcodes
+      : state.focus === 'cooked' && cookedEmojiData
+      ? `${cookedEmojiData.recipe?.[0].shortcodes} x ${cookedEmojiData.recipe?.[1].shortcodes}`
+      : 'Pick an emoji…'
 
   return (
     <div class="kitchen kitchen-preview">
@@ -170,7 +202,7 @@ export function renderKitchenPreview(
 
           <button
             class={`slot ${state.focus === 'right' ? 'slot-current' : ''}`}
-            disabled={!state.pinned}
+            disabled={!state.left}
             onClick={() => {
               setState({ kitchen: { ...state, focus: 'right' } }, () => {
                 state.handleSearchInput()
@@ -184,14 +216,22 @@ export function renderKitchenPreview(
 
           <div>=</div>
 
-          <div class="slot">
+          <button
+            class={`slot ${state.focus === 'cooked' ? 'slot-current' : ''}`}
+            disabled={!state.left || !state.right}
+          >
             {cookedEmojiData && (
               <img class="cooked-emoji" src={cookedEmojiData.src} alt="" />
             )}
-          </div>
+          </button>
         </div>
         <div class="action">
-          <button>Select</button>
+          <button
+            disabled={!state.cooked}
+            onClick={(ev) => onEmojiSelect(state.cooked, ev)}
+          >
+            Select
+          </button>
         </div>
       </div>
 
