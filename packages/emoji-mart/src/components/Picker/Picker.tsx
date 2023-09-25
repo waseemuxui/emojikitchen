@@ -873,7 +873,7 @@ export default class Picker extends Component {
               autoComplete="off"
             ></input>
             <span class="icon loupe flex">{Icons.search.loupe}</span>
-            {this.state.searchResults && (
+            {this.refs.searchInput.current?.value && (
               <button
                 title="Clear"
                 aria-label="Clear"
