@@ -589,7 +589,7 @@ button {
         background-color: var(--em-switch-active);
 
         .switch-handle {
-          transform: translateX(0);
+          transform: translateX(var(--switch-size));
         }
       }
 
@@ -597,7 +597,7 @@ button {
         background-color: var(--em-switch-inactive);
 
         .switch-handle {
-          transform: translateX(var(--switch-size));
+          transform: translateX(0);
         }
       }
     }
