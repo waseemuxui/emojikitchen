@@ -15,27 +15,20 @@ Emoji Kitchen Mart is fully compatible with [the original Emoji Mart](https://gi
   - has an additional field `recipe: [EmojiData, EmojiData]`.
   - doesn't have `native`, `unified`, and `shortcodes`, but have `src`.
 
-## Example
+## CSS Variables
 
-```sh
-npm install --save emoji-kitchen-mart @emoji-mart/data
-```
+Emoji Kitchen Mart has some UI components that the original Emoji Kitchen doesn't have. The color of them can be customized using the following CSS variables.
 
-```js
-import { Picker } from 'emoji-kitchen-mart';
-import data from '@emoji-mart/data';
-
-const picker = new Picker({
-  data,
-  onEmojiSelect: (data, ev) => {
-    // Selected emoji
-    console.log(data);
-
-    // Raw click event
-    console.log(ev);
-  }
-})
-```
+- Switch
+  - `--em-switch-active`
+  - `--em-switch-inactive`
+- Button
+  - `--em-button-background`
+  - `--em-button-background-hover`
+  - `--em-button-background-active`
+  - `--em-button-background-disabled`
+  - `--em-button-color`
+  - `--em-button-color-disabled`
 
 ---
 

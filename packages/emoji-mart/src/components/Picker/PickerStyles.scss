@@ -29,6 +29,16 @@
   --em-rgb-input: var(--rgb-input, 255, 255, 255);
   --em-color-border: var(--color-border, rgba(0, 0, 0, .05));
   --em-color-border-over: var(--color-border-over, rgba(0, 0, 0, .1));
+
+  // for kitchen
+  --em-switch-active: rgb(var(--em-rgb-accent));
+  --em-switch-inactive: var(--color-b);
+  --em-button-background: rgb(var(--em-rgb-accent));
+  --em-button-background-hover: rgba(var(--em-rgb-accent), 0.85);
+  --em-button-background-active: rgba(var(--em-rgb-accent), 0.7);
+  --em-button-background-disabled: var(--color-b);
+  --em-button-color: white;
+  --em-button-color-disabled: white;
 }
 
 [data-theme="dark"] {
@@ -38,6 +48,16 @@
   --em-rgb-input: var(--rgb-input, 0, 0, 0);
   --em-color-border: var(--color-border, rgba(255, 255, 255, .1));
   --em-color-border-over: var(--color-border-over, rgba(255, 255, 255, .2));
+
+  // for kitchen
+  --em-switch-active: rgb(var(--em-rgb-accent));
+  --em-switch-inactive: var(--color-b);
+  --em-button-background: rgb(var(--em-rgb-accent));
+  --em-button-background-hover: rgba(var(--em-rgb-accent), 0.85);
+  --em-button-background-active: rgba(var(--em-rgb-accent), 0.7);
+  --em-button-background-disabled: var(--color-b);
+  --em-button-color: white;
+  --em-button-color-disabled: white;
 }
 
 #root {
@@ -566,7 +586,7 @@ button {
       }
 
       &[aria-checked="true"] {
-        background-color: rgb(var(--em-rgb-accent));
+        background-color: var(--em-switch-active);
 
         .switch-handle {
           transform: translateX(0);
@@ -574,7 +594,7 @@ button {
       }
 
       &[aria-checked="false"] {
-        background-color: var(--color-b);
+        background-color: var(--em-switch-inactive);
 
         .switch-handle {
           transform: translateX(var(--switch-size));
@@ -596,10 +616,43 @@ button {
       cursor: auto;
     }
 
-    .slots {
+    .preview {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+
+      .slots {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-grow: 1;
+        flex-shrink: 0;
+      }
+
+      .action {
+        flex-grow: 0;
+        flex-shrink: 0;
+        padding-left: 16px;
+
+        button {
+          border-radius: 5px;
+          padding: 4px 8px;
+          background-color: var(--em-button-background);
+          color: var(--em-button-color);
+
+          &:disabled {
+            background-color: var(--em-button-background-disabled);
+            color: var(--em-button-color-disabled);
+          }
+
+          &:not(:disabled):hover {
+            background-color: var(--em-button-background-hover);
+          }
+
+          &:not(:disabled):active {
+            background-color: var(--em-button-background-active);
+          }
+        }
+      }
     }
 
     .slot {

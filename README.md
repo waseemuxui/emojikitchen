@@ -15,6 +15,21 @@ Emoji Kitchen Mart is fully compatible with [the original Emoji Mart](https://gi
   - has an additional field `recipe: [EmojiData, EmojiData]`.
   - doesn't have `native`, `unified`, and `shortcodes`, but have `src`.
 
+## CSS Variables
+
+Emoji Kitchen Mart has some UI components that the original Emoji Kitchen doesn't have. The color of them can be customized using the following CSS variables.
+
+- Switch
+  - `--em-switch-active`
+  - `--em-switch-inactive`
+- Button
+  - `--em-button-background`
+  - `--em-button-background-hover`
+  - `--em-button-background-active`
+  - `--em-button-background-disabled`
+  - `--em-button-color`
+  - `--em-button-color-disabled`
+
 ---
 
 # Original README

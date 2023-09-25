@@ -151,40 +151,47 @@ export function renderKitchenPreview(
 
   return (
     <div class="kitchen kitchen-preview">
-      <div class="slots">
-        <button
-          class={`slot ${state.focus === 'left' ? 'slot-current' : ''}`}
-          onClick={() => {
-            setState({ kitchen: { ...state, focus: 'left' } }, () => {
-              state.handleSearchInput()
-            })
-          }}
-        >
-          {leftEmoji && <Emoji emoji={leftEmoji} set={props.set} size="28px" />}
-        </button>
+      <div class="preview">
+        <div class="slots">
+          <button
+            class={`slot ${state.focus === 'left' ? 'slot-current' : ''}`}
+            onClick={() => {
+              setState({ kitchen: { ...state, focus: 'left' } }, () => {
+                state.handleSearchInput()
+              })
+            }}
+          >
+            {leftEmoji && (
+              <Emoji emoji={leftEmoji} set={props.set} size="28px" />
+            )}
+          </button>
 
-        <div>x</div>
+          <div>x</div>
 
-        <button
-          class={`slot ${state.focus === 'right' ? 'slot-current' : ''}`}
-          disabled={!state.pinned}
-          onClick={() => {
-            setState({ kitchen: { ...state, focus: 'right' } }, () => {
-              state.handleSearchInput()
-            })
-          }}
-        >
-          {rightEmoji && (
-            <Emoji emoji={rightEmoji} set={props.set} size="28px" />
-          )}
-        </button>
+          <button
+            class={`slot ${state.focus === 'right' ? 'slot-current' : ''}`}
+            disabled={!state.pinned}
+            onClick={() => {
+              setState({ kitchen: { ...state, focus: 'right' } }, () => {
+                state.handleSearchInput()
+              })
+            }}
+          >
+            {rightEmoji && (
+              <Emoji emoji={rightEmoji} set={props.set} size="28px" />
+            )}
+          </button>
 
-        <div>=</div>
+          <div>=</div>
 
-        <div class="slot">
-          {cookedEmojiData && (
-            <img class="cooked-emoji" src={cookedEmojiData.src} alt="" />
-          )}
+          <div class="slot">
+            {cookedEmojiData && (
+              <img class="cooked-emoji" src={cookedEmojiData.src} alt="" />
+            )}
+          </div>
+        </div>
+        <div class="action">
+          <button>Select</button>
         </div>
       </div>
 
