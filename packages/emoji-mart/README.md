@@ -10,7 +10,7 @@
 
 Emoji Kitchen Mart is fully compatible with [the original Emoji Mart](https://github.com/missive/emoji-mart) (v5.5.2 for now). The usage is completely the same as the original except for the following points:
 
-- `npm install emoji-kitchen-mart` instead of `emoji-kitchen`.
+- `npm install emoji-kitchen-mart` instead of `emoji-mart`.
 - When a *cooked* emoji is selected, the first argument `emojiData: EmojiData` that `onEmojiSelect` takes...
   - has an additional field `recipe: [EmojiData, EmojiData]`.
   - doesn't have `native`, `unified`, and `shortcodes`, but have `src`.
