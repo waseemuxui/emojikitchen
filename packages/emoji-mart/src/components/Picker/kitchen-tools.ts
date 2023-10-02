@@ -13,8 +13,15 @@ export function findCookedEmoji(emojiId: string): EmojiItem | undefined {
 
     const leftId = emojiId.substring(0, del)
     const rightId = emojiId.substring(del + 1)
+    del = del + 1
 
-    const cooked = cook(SearchIndex.get(leftId), SearchIndex.get(rightId))
+    const left = SearchIndex.get(leftId)
+    const right = SearchIndex.get(rightId)
+    if (!left || !right) {
+      continue
+    }
+
+    const cooked = cook(left, right)
 
     if (cooked) {
       return {
