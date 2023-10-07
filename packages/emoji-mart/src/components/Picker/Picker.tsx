@@ -25,7 +25,7 @@ const Performance = {
 
 export default class Picker extends Component {
   constructor(props) {
-    super()
+    super(props)
 
     this.observers = []
 
